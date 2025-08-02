@@ -2,9 +2,9 @@
   "name": "church-backend",
   "private": true,
   "version": "0.0.0",
-  "main": "backend/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js"
+    "start": "nodemon server"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
