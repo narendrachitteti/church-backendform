@@ -10,6 +10,17 @@ const FieldSchema = new mongoose.Schema({
 const FormSchema = new mongoose.Schema({
   name: { type: String, required: true },
   fields: [FieldSchema],
+  globalDropdowns: {
+    festivals: [
+      {
+        name: { type: String, required: true },
+        fee: { type: Number, required: true }
+      }
+    ],
+    denominations: [String],
+    paymentModes: [String],
+    paymentStatuses: [String],
+  },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   createdAt: { type: Date, default: Date.now },
 });

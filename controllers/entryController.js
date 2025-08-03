@@ -1,3 +1,4 @@
+
 const Entry = require('../models/Entry');
 
 exports.getEntries = async (req, res) => {
@@ -10,7 +11,18 @@ exports.getEntries = async (req, res) => {
 };
 
 
-// const { sendWhatsApp } = require('../utils/whatsapp');
+exports.deleteEntry = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await Entry.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ error: 'Entry not found' });
+    }
+    res.json({ message: 'Entry deleted' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 exports.createEntry = async (req, res) => {
   try {
@@ -34,19 +46,20 @@ exports.createEntry = async (req, res) => {
     });
     await entry.save();
 
-    // Send WhatsApp message to entered phone number
-    // const phone = data.phoneNumber;
-    // if (phone) {
-    //   try {
-    //     await sendWhatsApp(phone, `Your church entry has been saved! Your ID: ${entryId}`);
-    //   } catch (werr) {
-    //     // Log WhatsApp error but don't fail entry creation
-    //     console.error('WhatsApp error:', werr.message);
-    //   }
-    // }
-
     res.status(201).json(entry);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
+exports.updateEntry = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data } = req.body;
+    const entry = await Entry.findByIdAndUpdate(id, { data }, { new: true });
+    res.json(entry);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+

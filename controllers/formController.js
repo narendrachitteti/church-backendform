@@ -11,8 +11,8 @@ exports.getForms = async (req, res) => {
 
 exports.createForm = async (req, res) => {
   try {
-    const { name, fields } = req.body;
-    const form = new FormSchema({ name, fields, createdBy: req.user ? req.user.id : null });
+    const { name, fields, globalDropdowns } = req.body;
+    const form = new FormSchema({ name, fields, globalDropdowns, createdBy: req.user ? req.user.id : null });
     await form.save();
     res.status(201).json(form);
   } catch (err) {
@@ -23,8 +23,8 @@ exports.createForm = async (req, res) => {
 exports.updateForm = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, fields } = req.body;
-    const form = await FormSchema.findByIdAndUpdate(id, { name, fields }, { new: true });
+    const { name, fields, globalDropdowns } = req.body;
+    const form = await FormSchema.findByIdAndUpdate(id, { name, fields, globalDropdowns }, { new: true });
     res.json(form);
   } catch (err) {
     res.status(400).json({ error: err.message });
